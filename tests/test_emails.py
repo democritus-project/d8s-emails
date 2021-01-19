@@ -1,7 +1,6 @@
 from democritus_emails import (
     is_email,
     email_header_date_fix,
-    email_examples,
     email_read,
     email_object_new,
     email_content_transfer_encoding,
@@ -59,15 +58,6 @@ Reply-To: freedomnow@newmail.net'''
 #     assert email_fix(email_text: str) == 'fill'
 
 
-def test_email_examples_docs_1():
-    examples = email_examples()
-    assert len(examples) == 10
-    for i in examples:
-        assert is_email(i)
-
-    assert len(email_examples(n=100)) == 100
-
-
 def test_email_read_docs_1():
     email_object = email_read(SIMPLE_EMAIL_TEXT)
     assert len(email_object['From'].addresses) == 1
@@ -119,10 +109,11 @@ def test_email_bodies_as_strings_docs_1():
 
 
 def test_email_attachments_docs_1():
-    from networking import get
+    from democritus_networking import get
 
     email_text = get(
-        'https://gist.githubusercontent.com/fhightower/495ca027d72b0870baab6740e7433643/raw/6225a30441e1c899503cc4354566076571a4412a/dummy.eml'
+        'https://gist.githubusercontent.com/fhightower/495ca027d72b0870baab6740e7433643/raw/6225a30441e1c899503cc4354566076571a4412a/dummy.eml',
+        process_response=True,
     )
     attachments = email_attachments(email_text)
     assert len(attachments) == 2
@@ -225,10 +216,11 @@ def test_email_structure_docs_1():
 
 
 def test_email_structure_docs_2():
-    from networking import get
+    from democritus_networking import get
 
     email_text = get(
-        'https://gist.githubusercontent.com/fhightower/495ca027d72b0870baab6740e7433643/raw/6225a30441e1c899503cc4354566076571a4412a/dummy.eml'
+        'https://gist.githubusercontent.com/fhightower/495ca027d72b0870baab6740e7433643/raw/6225a30441e1c899503cc4354566076571a4412a/dummy.eml',
+        process_response=True,
     )
 
     structure = email_structure(email_text)

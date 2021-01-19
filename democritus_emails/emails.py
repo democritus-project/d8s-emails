@@ -1,11 +1,11 @@
 from typing import Any, Dict, List
 
+from .emails_temp_utils import list_delete_empty_items, dict_add
+
 
 def is_email(possible_email_text: str) -> bool:
     """Determine if the given string is an email."""
     # TODO (oct 2020): replace the list_delete_empty_items with iterables.remove_empty or something like that
-    from lists import list_delete_empty_items
-
     try:
         email_object = email_read(possible_email_text)
     except Exception:
@@ -22,10 +22,10 @@ def is_email(possible_email_text: str) -> bool:
 
 def email_header_date_fix(email_text: str):
     """Fix the `Date` header in the given email email_text."""
-    from regexes import find
+    import re
 
     date_header_pattern = 'Date: (.*)'
-    date_headers = find(date_header_pattern, email_text)
+    date_headers = re.findall(date_header_pattern, email_text)
 
     # TODO: keep working on this
 
@@ -35,18 +35,10 @@ def email_header_date_fix(email_text: str):
     return date_headers
 
 
-def email_examples(n: int = 10):
-    """Create n emails."""
-    raise NotImplementedError('Not implemented yet, sorry')
-
-
-def email_read(email_text):
+def email_read(email_string: str):
     """."""
     import email
     from email.policy import default
-    from utility import request_or_read
-
-    email_string = request_or_read(email_text)
 
     return email.message_from_string(email_string, policy=default)
 
@@ -167,8 +159,6 @@ def email_headers_raw(email_text):
 
 def email_headers_as_dict(email_text) -> Dict[str, List[str]]:
     """Return email's header fields as a dictionary with the header field key as the dictionary's key and the header field value as the dictionary's value."""
-    from dicts import dict_add
-
     headers = email_headers(email_text)
     email_header_dict = {}
 

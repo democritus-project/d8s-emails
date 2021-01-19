@@ -1,0 +1,1 @@
+democritus-networking @ git+https://github.com/democritus-project/democritus-networking.git#egg=democritus-networking
