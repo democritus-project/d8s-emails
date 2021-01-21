@@ -1,1 +1,2 @@
 democritus-networking @ git+https://github.com/democritus-project/democritus-networking.git#egg=democritus-networking
+importlib-metadata; python_version < '3.8'
