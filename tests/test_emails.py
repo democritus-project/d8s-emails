@@ -1,4 +1,4 @@
-from democritus_emails import (
+from d8s_emails import (
     is_email,
     email_header_date_fix,
     email_read,
@@ -19,7 +19,7 @@ from democritus_emails import (
     email_header_add_raw,
     email_header_add,
 )
-from democritus_emails.emails import _email_structure_iterator, _is_email_object
+from d8s_emails.emails import _email_structure_iterator, _is_email_object
 
 SIMPLE_EMAIL_TEXT = """Subject: Buy bitcoin now!
 From: Bob Bradbury <bob@gmail.com>
