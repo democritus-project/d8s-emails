@@ -109,7 +109,7 @@ def test_email_bodies_as_strings_docs_1():
 
 
 def test_email_attachments_docs_1():
-    from democritus_networking import get
+    from d8s_networking import get
 
     email_text = get(
         'https://gist.githubusercontent.com/fhightower/495ca027d72b0870baab6740e7433643/raw/6225a30441e1c899503cc4354566076571a4412a/dummy.eml',
@@ -216,7 +216,7 @@ def test_email_structure_docs_1():
 
 
 def test_email_structure_docs_2():
-    from democritus_networking import get
+    from d8s_networking import get
 
     email_text = get(
         'https://gist.githubusercontent.com/fhightower/495ca027d72b0870baab6740e7433643/raw/6225a30441e1c899503cc4354566076571a4412a/dummy.eml',
