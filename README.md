@@ -14,9 +14,84 @@ Democritus functions<sup>[1]</sup> for working with emails.
 
 We use `d8s` as an abbreviation for `democritus` (you can read more about this [here](https://github.com/democritus-project/roadmap#what-is-d8s)).
 
-## Usage
+## Functions
 
-Coming soon...
+  - ```python
+    def is_email(possible_email_text: str) -> bool:
+        """Determine if the given string is an email."""
+    ```
+  - ```python
+    def email_header_date_fix(email_text: str):
+        """Fix the `Date` header in the given email email_text."""
+    ```
+  - ```python
+    def email_read(email_string: str):
+        """."""
+    ```
+  - ```python
+    def email_object_new():
+        """."""
+    ```
+  - ```python
+    def email_content_transfer_encoding(email_text):
+        """Get the content-transfer-encoding for the email (see https://www.w3.org/Protocols/rfc1341/5_Content-Transfer-Encoding.html)."""
+    ```
+  - ```python
+    def email_bodies_as_strings(email_text):
+        """Return the bodies (as strings) for the given email."""
+    ```
+  - ```python
+    def email_bodies_as_objects(email_text):
+        """Return the bodies (as objects) for the given email."""
+    ```
+  - ```python
+    def email_attachments(email_text):
+        """Return the attachments (as strings) for the given email."""
+    ```
+  - ```python
+    def email_attachments_objects(email_text):
+        """Return the attachments (as objects) for the given email."""
+    ```
+  - ```python
+    def email_body_is_base64(email_text):
+        """Determine if the body of the email is encoded using base64."""
+    ```
+  - ```python
+    def email_header_fields(email_text):
+        """Get the header fields in the email."""
+    ```
+  - ```python
+    def email_headers(email_text):
+        """Get the values of the header fields in the email."""
+    ```
+  - ```python
+    def email_headers_raw(email_text):
+        """Get the raw (undecoded) values of the header fields in the email."""
+    ```
+  - ```python
+    def email_headers_as_dict(email_text) -> Dict[str, List[str]]:
+        """Return email's header fields as a dictionary with the header field key as the dictionary's key and the header field value as the dictionary's value."""
+    ```
+  - ```python
+    def email_header(email_text, header_field):
+        """Get the value(s) for the given header fields."""
+    ```
+  - ```python
+    def email_header_delete_field(email_text, header_field):
+        """Delete the header_field from the email_text."""
+    ```
+  - ```python
+    def email_structure(email_text):
+        """Get the structure of the email (this function was inspired by the function here: https://github.com/python/cpython/blob/4993cc0a5b34dc91da2b41c50e33d809f0191355/Lib/email/iterators.py#L59 - which is described here: https://docs.python.org/3.5/library/email.iterators.html?highlight=_structure#email.iterators._structure)."""
+    ```
+  - ```python
+    def email_header_add_raw(email, header_name, header_value):
+        """Add a header to the email."""
+    ```
+  - ```python
+    def email_header_add(email, header_name, header_value):
+        """Add a header to the email."""
+    ```
 
 ## Development
 
