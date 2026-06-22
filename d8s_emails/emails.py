@@ -1,6 +1,6 @@
 from typing import Any, Dict, List
 
-from .emails_temp_utils import list_delete_empty_items, dict_add
+from .emails_temp_utils import dict_add, list_delete_empty_items
 
 
 def is_email(possible_email_text: str) -> bool:
@@ -24,13 +24,13 @@ def email_header_date_fix(email_text: str):
     """Fix the `Date` header in the given email email_text."""
     import re
 
-    date_header_pattern = 'Date: (.*)'
+    date_header_pattern = "Date: (.*)"
     date_headers = re.findall(date_header_pattern, email_text)
 
     # TODO: keep working on this
 
     for date in date_headers:
-        print('date {}'.format(date))
+        print("date {}".format(date))
 
     return date_headers
 
@@ -58,7 +58,7 @@ def email_content_transfer_encoding(email_text):
     else:
         email_object = email_text
 
-    return email_object['Content-Transfer-Encoding']
+    return email_object["Content-Transfer-Encoding"]
 
 
 def _is_email_object(possible_email_object: Any):
@@ -123,8 +123,9 @@ def email_attachments_objects(email_text):
 
 def email_body_is_base64(email_text):
     """Determine if the body of the email is encoded using base64."""
-    # TODO: update this function to take a body object as an argument - there should also be a parallel function for attachments
-    return email_content_transfer_encoding(email_text) == 'base64'
+    # TODO: update this function to take a body object as an argument - there should also be a parallel
+    # function for attachments
+    return email_content_transfer_encoding(email_text) == "base64"
 
 
 def email_header_fields(email_text):
@@ -158,9 +159,12 @@ def email_headers_raw(email_text):
 
 
 def email_headers_as_dict(email_text) -> Dict[str, List[str]]:
-    """Return email's header fields as a dictionary with the header field key as the dictionary's key and the header field value as the dictionary's value."""
+    """Return email's header fields as a dictionary.
+
+    The header field key is used as the dictionary's key and the header field value as the dictionary's value.
+    """
     headers = email_headers(email_text)
-    email_header_dict = {}
+    email_header_dict: Dict[str, List[str]] = {}
 
     for key, value in headers:
         dict_add(email_header_dict, key, value)
@@ -191,23 +195,32 @@ def email_header_delete_field(email_text, header_field):
 
 
 def _email_structure_iterator(email_object, email_structure=None):
-    """Iterate through the given email_object and find its structure. This function is called from the `emailStructure` function."""
+    """Iterate through the given email_object and find its structure.
+
+    This function is called from the `emailStructure` function.
+    """
     if email_structure is None:
         email_structure = {}
 
-    email_structure['type'] = email_object.get_content_type()
-    email_structure['content_disposition'] = email_object.get_content_disposition()
-    email_structure['children'] = []
+    email_structure["type"] = email_object.get_content_type()
+    email_structure["content_disposition"] = email_object.get_content_disposition()
+    email_structure["children"] = []
 
     if email_object.is_multipart():
         for subpart in email_object.get_payload():
-            email_structure['children'].append(_email_structure_iterator(subpart))
+            email_structure["children"].append(_email_structure_iterator(subpart))
 
     return email_structure
 
 
 def email_structure(email_text):
-    """Get the structure of the email (this function was inspired by the function here: https://github.com/python/cpython/blob/4993cc0a5b34dc91da2b41c50e33d809f0191355/Lib/email/iterators.py#L59 - which is described here: https://docs.python.org/3.5/library/email.iterators.html?highlight=_structure#email.iterators._structure)."""
+    """Get the structure of the email.
+
+    This function was inspired by the function here:
+    https://github.com/python/cpython/blob/4993cc0a5b34dc91da2b41c50e33d809f0191355/Lib/email/iterators.py#L59
+    - which is described here:
+    https://docs.python.org/3.5/library/email.iterators.html?highlight=_structure#email.iterators._structure
+    """
     if isinstance(email_text, str):
         email_object = email_read(email_text)
     else:
