@@ -1,25 +1,21 @@
 from d8s_emails import (
-    is_email,
-    email_header_date_fix,
-    email_read,
-    email_object_new,
-    email_content_transfer_encoding,
-    email_bodies_as_strings,
-    email_bodies_as_objects,
     email_attachments,
-    email_attachments_objects,
+    email_bodies_as_strings,
     email_body_is_base64,
-    email_header_fields,
-    email_headers,
-    email_headers_raw,
-    email_headers_as_dict,
     email_header,
-    email_header_delete_field,
-    email_structure,
-    email_header_add_raw,
     email_header_add,
+    email_header_add_raw,
+    email_header_date_fix,
+    email_header_delete_field,
+    email_header_fields,
+    email_headers_as_dict,
+    email_headers_raw,
+    email_object_new,
+    email_read,
+    email_structure,
+    is_email,
 )
-from d8s_emails.emails import _email_structure_iterator, _is_email_object
+from d8s_emails.emails import _is_email_object
 
 SIMPLE_EMAIL_TEXT = """Subject: Buy bitcoin now!
 From: Bob Bradbury <bob@gmail.com>
@@ -31,8 +27,8 @@ LONG_EMAIL = """Delivered-To: REDACTED\r\nReceived: by 2002:a4a:3503:0:0:0:0:0 w
 
 
 def test_is_email_docs_1():
-    assert not is_email('foo bar')
-    assert not is_email('foo bar - this is definitely not an email!')
+    assert not is_email("foo bar")
+    assert not is_email("foo bar - this is definitely not an email!")
     assert is_email(SIMPLE_EMAIL_TEXT)
 
     # this is the text for an email, but should not be detected as an email b/c the header is not properly formatted and, therefore, if this text is parsed as an email, it will not have a body
@@ -43,11 +39,11 @@ def test_is_email_docs_1():
 
 
 def test_email_header_date_fix_docs_1():
-    s = '''Message-Id: <199901120345.LAA09379@www.textiles.org.tw>
+    s = """Message-Id: <199901120345.LAA09379@www.textiles.org.tw>
 Date: 1/11/99 11:28:24 AM Pacific Daylight Time
-Reply-To: freedomnow@newmail.net'''
+Reply-To: freedomnow@newmail.net"""
     results = email_header_date_fix(s)
-    assert results == ['1/11/99 11:28:24 AM Pacific Daylight Time']
+    assert results == ["1/11/99 11:28:24 AM Pacific Daylight Time"]
 
 
 # def test_email_reformat_docs_1():
@@ -60,23 +56,23 @@ Reply-To: freedomnow@newmail.net'''
 
 def test_email_read_docs_1():
     email_object = email_read(SIMPLE_EMAIL_TEXT)
-    assert len(email_object['From'].addresses) == 1
-    assert email_object['From'].addresses[0].display_name == 'Bob Bradbury'
+    assert len(email_object["From"].addresses) == 1
+    assert email_object["From"].addresses[0].display_name == "Bob Bradbury"
 
-    email_object = email_read('foo bar - this is definitely not an email!')
+    email_object = email_read("foo bar - this is definitely not an email!")
     assert len(email_object.items()) == 0
 
 
 def test_email_read_odd_line_endings():
     s = """Subject: Buy bitcoin now!\nFrom: Bob Bradbury <bob@gmail.com>\nTo: Alice Asimov <alice@gmail.com>\n\nHi!"""
     email_object = email_read(s)
-    assert len(email_object['From'].addresses) == 1
-    assert email_object['From'].addresses[0].display_name == 'Bob Bradbury'
+    assert len(email_object["From"].addresses) == 1
+    assert email_object["From"].addresses[0].display_name == "Bob Bradbury"
 
     s = """Subject: Buy bitcoin now!\r\nFrom: Bob Bradbury <bob@gmail.com>\r\nTo: Alice Asimov <alice@gmail.com>\r\n\r\nHi!"""
     email_object = email_read(s)
-    assert len(email_object['From'].addresses) == 1
-    assert email_object['From'].addresses[0].display_name == 'Bob Bradbury'
+    assert len(email_object["From"].addresses) == 1
+    assert email_object["From"].addresses[0].display_name == "Bob Bradbury"
 
 
 def test_email_object_new_docs_1():
@@ -88,17 +84,17 @@ def test_email_object_new_docs_1():
 
 
 def test__is_email_object_docs_1():
-    assert not _is_email_object('foo')
+    assert not _is_email_object("foo")
     assert _is_email_object(email_object_new())
 
 
 def test_email_bodies_as_strings_docs_1():
-    assert email_bodies_as_strings(SIMPLE_EMAIL_TEXT) == ['Hi!']
+    assert email_bodies_as_strings(SIMPLE_EMAIL_TEXT) == ["Hi!"]
 
     # test a longer email with multiple bodies
     bodies = email_bodies_as_strings(LONG_EMAIL)
     assert len(bodies) == 2
-    assert bodies[0].startswith('When you=E2=80=99re')
+    assert bodies[0].startswith("When you=E2=80=99re")
     assert bodies[1].startswith(
         '<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w=\r\n3.org/TR/REC-html40/loose.dtd"><html><head>'
     )
@@ -112,7 +108,7 @@ def test_email_attachments_docs_1():
     from d8s_networking import get
 
     email_text = get(
-        'https://gist.githubusercontent.com/fhightower/495ca027d72b0870baab6740e7433643/raw/6225a30441e1c899503cc4354566076571a4412a/dummy.eml',
+        "https://gist.githubusercontent.com/fhightower/495ca027d72b0870baab6740e7433643/raw/6225a30441e1c899503cc4354566076571a4412a/dummy.eml",
         process_response=True,
     )
     attachments = email_attachments(email_text)
@@ -138,7 +134,7 @@ SSdtIHNvcnJ5IERhdmUsIEknbSBhZnJhaWQgSSBjYW4ndCBkbyB0aGF0
 
 
 def test_email_header_fields_docs_1():
-    assert email_header_fields(SIMPLE_EMAIL_TEXT) == ['Subject', 'From', 'To']
+    assert email_header_fields(SIMPLE_EMAIL_TEXT) == ["Subject", "From", "To"]
 
 
 # def test_email_headers_docs_1():
@@ -152,9 +148,9 @@ To: Alice Asimov <alice@gmail.com>
 
 Hi Alice Asimov!"""
     assert email_headers_raw(email_text) == [
-        ('Subject', '=?UTF-8?B?Q29uZmlybWF0aW9uIE5lZWRlZDogZXhhbXBsZUBnbWFpbC5jb20=?='),
-        ('From', 'Bob Bradbury <bob@gmail.com>'),
-        ('To', 'Alice Asimov <alice@gmail.com>'),
+        ("Subject", "=?UTF-8?B?Q29uZmlybWF0aW9uIE5lZWRlZDogZXhhbXBsZUBnbWFpbC5jb20=?="),
+        ("From", "Bob Bradbury <bob@gmail.com>"),
+        ("To", "Alice Asimov <alice@gmail.com>"),
     ]
 
 
@@ -167,27 +163,20 @@ def test_email_headers_as_dict_docs_1():
     assert email_header_json == {}
 
     # test an email with multiple entries for the 'Received' field
-    email_text = """Subject: =?UTF-8?B?Q29uZmlybWF0aW9uIE5lZWRlZDogZXhhbXBsZUBnbWFpbC5jb20=?=
-Received: A
-Received: B
-From: Bob Bradbury <bob@gmail.com>
-To: Alice Asimov <alice@gmail.com>
-
-Hi Alice Asimov!"""
     email_header_json = email_headers_as_dict(SIMPLE_EMAIL_TEXT)
     assert email_header_json == {}
 
 
 def test_email_header_docs_1():
-    assert email_header(SIMPLE_EMAIL_TEXT, 'Subject') == ['Buy bitcoin now!']
+    assert email_header(SIMPLE_EMAIL_TEXT, "Subject") == ["Buy bitcoin now!"]
 
     email_text = """Subject: =?UTF-8?B?Q29uZmlybWF0aW9uIE5lZWRlZDogZXhhbXBsZUBnbWFpbC5jb20=?=
 From: Bob Bradbury <bob@gmail.com>
 To: Alice Asimov <alice@gmail.com>
 
 Hi Alice Asimov!"""
-    results = email_header(email_text, 'Subject')
-    assert results == ['Confirmation Needed: example@gmail.com']
+    results = email_header(email_text, "Subject")
+    assert results == ["Confirmation Needed: example@gmail.com"]
 
     # test an email with multiple entries for the 'Received' field
     email_text = """Subject: =?UTF-8?B?Q29uZmlybWF0aW9uIE5lZWRlZDogZXhhbXBsZUBnbWFpbC5jb20=?=
@@ -197,14 +186,14 @@ From: Bob Bradbury <bob@gmail.com>
 To: Alice Asimov <alice@gmail.com>
 
 Hi Alice Asimov!"""
-    results = email_header(email_text, 'Received')
-    assert results == ['A', 'B']
+    results = email_header(email_text, "Received")
+    assert results == ["A", "B"]
 
 
 def test_email_header_delete_field_docs_1():
-    assert email_header(SIMPLE_EMAIL_TEXT, 'Subject') == ['Buy bitcoin now!']
-    updated_email_object = email_header_delete_field(SIMPLE_EMAIL_TEXT, 'Subject')
-    assert email_header(updated_email_object, 'Subject') == None
+    assert email_header(SIMPLE_EMAIL_TEXT, "Subject") == ["Buy bitcoin now!"]
+    updated_email_object = email_header_delete_field(SIMPLE_EMAIL_TEXT, "Subject")
+    assert email_header(updated_email_object, "Subject") is None
 
 
 # def test__email_structure_iterator_docs_1():
@@ -212,53 +201,53 @@ def test_email_header_delete_field_docs_1():
 
 
 def test_email_structure_docs_1():
-    assert email_structure(SIMPLE_EMAIL_TEXT) == {'type': 'text/plain', 'content_disposition': None, 'children': []}
+    assert email_structure(SIMPLE_EMAIL_TEXT) == {"type": "text/plain", "content_disposition": None, "children": []}
 
 
 def test_email_structure_docs_2():
     from d8s_networking import get
 
     email_text = get(
-        'https://gist.githubusercontent.com/fhightower/495ca027d72b0870baab6740e7433643/raw/6225a30441e1c899503cc4354566076571a4412a/dummy.eml',
+        "https://gist.githubusercontent.com/fhightower/495ca027d72b0870baab6740e7433643/raw/6225a30441e1c899503cc4354566076571a4412a/dummy.eml",
         process_response=True,
     )
 
     structure = email_structure(email_text)
     assert structure == {
-        'type': 'multipart/mixed',
-        'content_disposition': None,
-        'children': [
+        "type": "multipart/mixed",
+        "content_disposition": None,
+        "children": [
             {
-                'type': 'multipart/alternative',
-                'content_disposition': None,
-                'children': [
-                    {'type': 'text/plain', 'content_disposition': None, 'children': []},
-                    {'type': 'text/html', 'content_disposition': None, 'children': []},
+                "type": "multipart/alternative",
+                "content_disposition": None,
+                "children": [
+                    {"type": "text/plain", "content_disposition": None, "children": []},
+                    {"type": "text/html", "content_disposition": None, "children": []},
                 ],
             },
-            {'type': 'text/xml', 'content_disposition': 'attachment', 'children': []},
-            {'type': 'image/png', 'content_disposition': 'attachment', 'children': []},
+            {"type": "text/xml", "content_disposition": "attachment", "children": []},
+            {"type": "image/png", "content_disposition": "attachment", "children": []},
         ],
     }
 
 
 def test_email_header_add_raw_docs_1():
-    email = '''From: Bob Bradbury <bob@gmail.com>
+    email = """From: Bob Bradbury <bob@gmail.com>
 To: Alice Asimov <alice@gmail.com>
 
-Hi Alice Asimov!'''
+Hi Alice Asimov!"""
     updated_email_object = email_header_add_raw(
-        email, 'Subject', '=?UTF-8?B?Q29uZmlybWF0aW9uIE5lZWRlZDogZXhhbXBsZUBnbWFpbC5jb20=?='
+        email, "Subject", "=?UTF-8?B?Q29uZmlybWF0aW9uIE5lZWRlZDogZXhhbXBsZUBnbWFpbC5jb20=?="
     )
-    assert email_header(updated_email_object, 'Subject') == ['Confirmation Needed: example@gmail.com']
+    assert email_header(updated_email_object, "Subject") == ["Confirmation Needed: example@gmail.com"]
 
 
 def test_email_header_add_docs_1():
-    email = '''From: Bob Bradbury <bob@gmail.com>
+    email = """From: Bob Bradbury <bob@gmail.com>
 To: Alice Asimov <alice@gmail.com>
 
-Hi Alice Asimov!'''
+Hi Alice Asimov!"""
     updated_email_object = email_header_add(
-        email, 'Subject', '=?UTF-8?B?Q29uZmlybWF0aW9uIE5lZWRlZDogZXhhbXBsZUBnbWFpbC5jb20=?='
+        email, "Subject", "=?UTF-8?B?Q29uZmlybWF0aW9uIE5lZWRlZDogZXhhbXBsZUBnbWFpbC5jb20=?="
     )
-    assert email_header(updated_email_object, 'Subject') == ['Confirmation Needed: example@gmail.com']
+    assert email_header(updated_email_object, "Subject") == ["Confirmation Needed: example@gmail.com"]
